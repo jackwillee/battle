@@ -17,7 +17,9 @@ class Battle < Sinatra::Base
 
   get '/attack' do
     session[:turn] = session[:turn] + 1
-    (session[:turn])%2 == 1 ? session[:player_1_HP] = session[:player_1_HP] - 10 : session[:player_2_HP] = session[:player_2_HP] - 10
+    
+    #$player_1.attack($player_2)
+    (session[:turn])%2 == 1 ?  $player_2.attack($player_1) : $player_1.attack($player_2)
     redirect '/play_continued'
   end
 
@@ -25,18 +27,16 @@ class Battle < Sinatra::Base
     @player_1_name = $player_1.show_name
     @player_2_name = $player_2.show_name
     session[:turn] = 1
-    session[:player_1_HP] = 60
-    session[:player_2_HP] = 60
-    @player_1_HP = session[:player_1_HP]
-    @player_2_HP = session[:player_2_HP]
+    @player_1_HP = $player_1.hp
+    @player_2_HP = $player_2.hp
     erb(:play)
   end
 
   get '/play_continued' do 
     @player_1_name = $player_1.show_name
     @player_2_name = $player_2.show_name
-    @player_1_HP = session[:player_1_HP]
-    @player_2_HP = session[:player_2_HP]
+    @player_1_HP = $player_1.hp
+    @player_2_HP = $player_2.hp
     if session[:turn]>1
       (session[:turn])%2 == 1 ? @message = "You attacked player 1" : @message = "You attacked player 2"
     end
