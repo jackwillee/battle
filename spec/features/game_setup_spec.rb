@@ -11,3 +11,10 @@ feature 'displays hitpoints' do
     expect(page).to have_content 'Mark: 60HP'
   end
 end
+
+feature 'display turn' do
+  scenario 'display player 1 turn at opening' do
+    sign_in_and_play
+    expect(page).to have_content('Turn: John')
+  end
+end
