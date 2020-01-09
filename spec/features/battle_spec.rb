@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 feature 'Battle' do
   scenario 'Player 1 attacks player 2' do
     sign_in_and_play
