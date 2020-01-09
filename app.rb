@@ -14,32 +14,25 @@ class Battle < Sinatra::Base
     player_1 = Player.new(params[:player_1_name])
     player_2 = Player.new(params[:player_2_name])
     $game = Game.new(player_1, player_2)
-    @player_1_name = $game.player_1.show_name
-    @player_2_name = $game.player_2.show_name
     redirect '/play'
   end
 
   get '/attack' do
-    $game.player_1? ? $game.attack($game.player_2) : $game.attack($game.player_1)
+    @game = $game
+    @game.player_1? ? @game.attack(@game.player_2) : @game.attack(@game.player_1)
     redirect '/play_continued'
   end
 
   get '/play' do
-    @player_1_name = $game.player_1.show_name
-    @player_2_name = $game.player_2.show_name
-    @turn = $game.turn
-    @player_1_HP = $game.player_1.hp
-    @player_2_HP = $game.player_2.hp
+    @game = $game
+    
     erb(:play)
   end
 
   get '/play_continued' do
-    @player_1_name = $game.player_1.show_name
-    @player_2_name = $game.player_2.show_name
-    @player_1_HP = $game.player_1.hp
-    @player_2_HP = $game.player_2.hp
-    @turn = $game.turn
-    $game.player_1? ? @message = 'You attacked player 1' : @message = 'You attacked player 2'
+   @game = $game
+    
+    @game.player_1? ? @message = 'You attacked player 1' : @message = 'You attacked player 2'
     erb(:play)
   end
 
